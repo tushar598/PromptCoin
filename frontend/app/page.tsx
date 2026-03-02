@@ -1068,7 +1068,7 @@ export default function App() {
           {/* Card 1 — Smart Contract Verification */}
           <div className="snap-start shrink-0 w-[300px] md:w-[380px] rounded-3xl overflow-hidden relative group border border-white/10 h-[420px]"
             style={{
-              backgroundImage: "url('https://images.unsplash.com/photo-1639762681485-074b7f4ec651?q=80&w=800&auto=format&fit=crop')",
+              backgroundImage: "url('https://images.unsplash.com/photo-1638818837109-0bdc64260430?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}>
@@ -1086,23 +1086,24 @@ export default function App() {
           </div>
 
           {/* Card 2 — Center feature card (no image) */}
-          <div className="snap-start shrink-0 w-[320px] md:w-[420px] rounded-3xl overflow-hidden relative border border-[#5B58F6]/40 bg-gradient-to-b from-[#5B58F6]/20 to-[#111] h-[420px] flex flex-col justify-center items-center p-10 text-center">
-            <div className="absolute inset-0 bg-[#5B58F6]/5 rounded-3xl" />
-            <div className="relative z-10">
-              <span className="text-xs bg-white/10 px-3 py-1 rounded-full mb-6 inline-block border border-white/10">
-                Seamless Connection
+         <div className="snap-start shrink-0 w-[300px] md:w-[380px] rounded-3xl overflow-hidden relative group border border-white/10 h-[420px]"
+            style={{
+              backgroundImage: "url('https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=800&auto=format&fit=crop')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}>
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20 group-hover:via-black/50 transition-all duration-300" />
+            <div className="absolute inset-0 p-7 flex flex-col justify-between">
+              <span className="text-xs bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1 rounded-full w-fit">
+                Seemless connection
               </span>
-              <div className="w-16 h-16 rounded-full bg-[#5B58F6]/20 border border-[#5B58F6]/40 flex items-center justify-center mx-auto mb-6">
-                <Wallet className="w-7 h-7 text-[#5B58F6]" />
+              <div>
+                <p className="text-xs text-[#5B58F6] font-medium uppercase tracking-wider mb-2">Exchange Layer</p>
+                <h3 className="text-xl font-medium mb-2">SWallet-Based Identity & On-Chain Reputation</h3>
+                <p className="text-sm text-gray-400">
+                  Connect your Web3 wallet to instantly verify your identity, showcase your on-chain contributions.
+                </p>
               </div>
-              <h3 className="text-2xl font-medium mb-4">
-                Wallet-Based Identity & On-Chain Reputation
-              </h3>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Connect your Web3 wallet to instantly verify your identity,
-                showcase your on-chain contributions, and securely interact with
-                founders and builders across the ecosystem.
-              </p>
             </div>
           </div>
 
