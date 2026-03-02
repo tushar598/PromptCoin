@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
 
 const SEPOLIA_CHAIN_ID = "0xaa36a7";
+const ALCHEMY_RPC = "https://0xrpc.io/sep";
 
 declare global {
   interface Window {
@@ -18,12 +19,6 @@ export function useWallet() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const checkNetwork = async (prov: ethers.BrowserProvider) => {
-    const net = await prov.getNetwork();
-    setNetwork(net.name);
-    return net.chainId.toString(16);
-  };
-
   const connect = useCallback(async () => {
     if (!window.ethereum) {
       setError("MetaMask not found. Please install it.");
@@ -32,8 +27,33 @@ export function useWallet() {
     try {
       setIsConnecting(true);
       setError(null);
+
+      // First request accounts
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+
+      // Switch to Sepolia and set Alchemy as the RPC
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: SEPOLIA_CHAIN_ID }],
+        });
+      } catch (switchError: any) {
+        // If Sepolia not added yet, add it with Alchemy RPC
+        if (switchError.code === 4902) {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [{
+              chainId: SEPOLIA_CHAIN_ID,
+              chainName: "Sepolia Test Network",
+              nativeCurrency: { name: "SepoliaETH", symbol: "ETH", decimals: 18 },
+              rpcUrls: [ALCHEMY_RPC],
+              blockExplorerUrls: ["https://sepolia.etherscan.io"],
+            }],
+          });
+        }
+      }
+
       const prov = new ethers.BrowserProvider(window.ethereum);
-      await prov.send("eth_requestAccounts", []);
       const sign = await prov.getSigner();
       const addr = await sign.getAddress();
 
@@ -41,19 +61,12 @@ export function useWallet() {
       const message = `Sign in to PromptCoin\nTimestamp: ${Date.now()}`;
       await sign.signMessage(message);
 
-      const chainId = await checkNetwork(prov);
-      if (`0x${chainId}` !== SEPOLIA_CHAIN_ID) {
-        try {
-          await window.ethereum.request({
-            method: "wallet_switchEthereumChain",
-            params: [{ chainId: SEPOLIA_CHAIN_ID }],
-          });
-        } catch {}
-      }
-
+      const net = await prov.getNetwork();
+      setNetwork(net.name);
       setProvider(prov);
       setSigner(sign);
       setAddress(addr);
+
     } catch (e: any) {
       setError(e.message || "Connection failed");
     } finally {
