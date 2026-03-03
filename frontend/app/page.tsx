@@ -241,6 +241,7 @@ import {
   ExternalLink,
   TrendingDown,
   TrendingUp,
+  ChevronDown,
   Wallet,
 } from "lucide-react";
 
@@ -589,32 +590,50 @@ export default function App() {
       </nav>
 
       {/* ── Hero ──────────────────────────────────────────────────────────────── */}
-      <section className="relative pt-40 pb-20 px-6 text-center">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#5B58F6]/30 blur-[150px] rounded-full pointer-events-none" />
+    {/* ── Hero ──────────────────────────────────────────────────────────────── */}
+      <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-16 px-6 text-center overflow-hidden">
+        {/* Hero Background Image */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: `url(./landingpageimage.png)`,
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
+        {/* Overlays */}
+        <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/50 via-black/30 to-black" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-black via-transparent to-transparent" />
+        {/* Purple glow accent */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#5B58F6]/20 blur-[120px] rounded-full pointer-events-none z-[2]" />
 
-        <div className="relative z-10 max-w-5xl mx-auto">
-          <div className="hero-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-medium text-gray-300 tracking-wide uppercase mb-8">
-            <Check className="w-3 h-3 text-[#5B58F6]" /> Live on Sepolia Testnet
+        <div className="relative z-10 max-w-5xl mx-auto w-full">
+          <div className="hero-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/15 bg-white/5 backdrop-blur-sm text-xs font-medium text-gray-300 tracking-widest uppercase mb-8 shadow-lg">
+            <span className="live-dot w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
+            Live on Sepolia Testnet
           </div>
 
-          <h1 className="hero-title text-5xl md:text-7xl font-medium tracking-tight mb-6 leading-[1.1]">
-            Powering the Future of
-            <br />
-            Decentralized Innovation.
+          <h1 className="hero-title text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-[1.05]">
+            Powering the Future<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B89FF] via-white to-[#5B58F6]">
+              of Decentralized
+            </span>
+            <br />Innovation.
           </h1>
 
-          <p className="hero-title text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
+          <p className="hero-subtitle text-gray-300 text-base md:text-lg max-w-2xl mx-auto mb-12 leading-relaxed">
             PromptCoin connects builders, founders, and Web3 talent through a
             token-powered ecosystem built for real on-chain collaboration.
           </p>
 
-          {/* Hero CTA buttons — wire up buyTokens / connect */}
+          {/* CTA Buttons */}
           <div className="hero-buttons flex items-center justify-center gap-4 flex-wrap">
             {!address ? (
               <button
                 onClick={connect}
                 disabled={isConnecting}
-                className="bg-[#5B58F6] hover:bg-[#4f4ce0] text-white px-8 py-3.5 rounded-full text-sm font-medium flex items-center gap-2 transition-colors disabled:opacity-50"
+                className="bg-[#5B58F6] hover:bg-[#4f4ce0] text-white px-8 py-3.5 rounded-full text-sm font-semibold flex items-center gap-2 transition-all hover:shadow-lg hover:shadow-[#5B58F6]/40 hover:-translate-y-0.5 disabled:opacity-50"
               >
                 {isConnecting ? "Connecting..." : "Connect Wallet"}
                 <ArrowUpRight className="w-4 h-4" />
@@ -623,7 +642,7 @@ export default function App() {
               <button
                 onClick={buyTokens}
                 disabled={isBuying || isWrongNetwork}
-                className="bg-[#5B58F6] hover:bg-[#4f4ce0] text-white px-8 py-3.5 rounded-full text-sm font-medium flex items-center gap-2 transition-colors disabled:opacity-50"
+                className="bg-[#5B58F6] hover:bg-[#4f4ce0] text-white px-8 py-3.5 rounded-full text-sm font-semibold flex items-center gap-2 transition-all hover:shadow-lg hover:shadow-[#5B58F6]/40 hover:-translate-y-0.5 disabled:opacity-50"
               >
                 {isBuying ? "Processing..." : "Buy Tokens"}
                 <ArrowUpRight className="w-4 h-4" />
@@ -632,48 +651,56 @@ export default function App() {
             <button
               onClick={address ? buyTokens : connect}
               disabled={isBuying}
-              className="border border-white/20 hover:bg-white/5 text-white px-8 py-3.5 rounded-full text-sm font-medium transition-colors disabled:opacity-50"
+              className="border border-white/25 hover:border-white/50 hover:bg-white/8 text-white px-8 py-3.5 rounded-full text-sm font-medium transition-all backdrop-blur-sm disabled:opacity-50"
             >
               {address ? "Buy Tokens" : "Explore Ecosystem"}
             </button>
           </div>
 
           {/* Wallet / tx feedback */}
-          {walletError && (
-            <p className="mt-4 text-red-400 text-sm">{walletError}</p>
-          )}
+          {walletError && <p className="mt-5 text-red-400 text-sm">{walletError}</p>}
           {isWrongNetwork && (
-            <p className="mt-4 text-yellow-400 text-sm">
+            <p className="mt-5 text-yellow-400 text-sm bg-yellow-900/20 border border-yellow-700/30 rounded-xl px-4 py-2.5 max-w-sm mx-auto">
               ⚠️ Please switch MetaMask to the Sepolia test network
             </p>
           )}
           {txHash && (
-            <div className="mt-4 bg-green-900/20 border border-green-700/50 rounded-xl p-3 max-w-md mx-auto">
-              <p className="text-green-400 text-sm">✅ Transaction confirmed!</p>
+            <div className="mt-5 bg-green-900/20 border border-green-700/40 rounded-2xl p-4 max-w-md mx-auto">
+              <p className="text-green-400 text-sm font-medium">✅ Transaction confirmed!</p>
               <a
                 href={`https://sepolia.etherscan.io/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-green-300 underline break-all"
+                className="text-xs text-green-300/80 hover:text-green-300 underline break-all mt-1 inline-block"
               >
                 {txHash}
               </a>
             </div>
           )}
           {txError && (
-            <p className="mt-4 text-red-400 text-sm max-w-md mx-auto">
+            <p className="mt-4 text-red-400 text-sm max-w-md mx-auto bg-red-900/20 border border-red-700/30 rounded-xl px-4 py-2.5">
               {txError}
             </p>
           )}
 
-          <div className="hero-graphic mt-24 relative max-w-4xl mx-auto perspective-1000">
-            <div className="relative w-full aspect-[2/1] bg-gradient-to-b from-white/10 to-transparent border-t border-white/20 rounded-t-3xl overflow-hidden flex items-center justify-center transform rotateX-12 shadow-2xl shadow-[#5B58F6]/20">
-              <div className="text-[12rem] md:text-[15rem] font-bold text-transparent bg-clip-text bg-gradient-to-br from-white via-white/80 to-white/20 drop-shadow-2xl">
+          {/* Hero Graphic */}
+          <div className="hero-graphic mt-20 relative max-w-3xl mx-auto">
+            <div className="hero-graphic-inner relative w-full aspect-[2.5/1] bg-gradient-to-b from-white/8 to-transparent border-t border-white/20 rounded-t-3xl overflow-hidden flex items-center justify-center shadow-2xl shadow-[#5B58F6]/20">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#5B58F6]/10 via-transparent to-purple-900/10" />
+              <div className="text-[10rem] md:text-[13rem] font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white/70 to-[#5B58F6]/40 drop-shadow-2xl select-none">
                 P
               </div>
-              <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] pointer-events-none" />
+              <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.15)_50%)] bg-[length:100%_3px] pointer-events-none opacity-30" />
+              {/* Glow below */}
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#5B58F6]/20 to-transparent" />
             </div>
           </div>
+        </div>
+
+        {/* Scroll hint */}
+        <div className="hero-scroll-hint absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500">
+          <span className="text-xs tracking-widest uppercase">Scroll</span>
+          <ChevronDown className="w-4 h-4 animate-bounce" />
         </div>
       </section>
 
@@ -951,8 +978,8 @@ export default function App() {
       </section>
 
       {/* ── Feedback Section ─────────────────────────────────────────────────── */}
-      <section className="py-24 px-6 border-t border-white/5 bg-gradient-to-b from-transparent to-[#5B58F6]/5">
-        <div className="text-center mb-16 max-w-2xl mx-auto">
+      <section className="py-12 px-6 border-t border-white/5 bg-gradient-to-b from-transparent to-[#5B58F6]/5">
+        <div className="text-center mb-5 max-w-2xl mx-auto">
           <span className="text-xs text-[#5B58F6] font-medium uppercase tracking-wider">Testimonials</span>
           <h2 className="text-3xl md:text-4xl font-medium mt-3 mb-4">
             Trusted by Web3 Builders Worldwide
